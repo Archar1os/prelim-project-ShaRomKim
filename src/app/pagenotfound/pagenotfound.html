@@ -1,0 +1,89 @@
+<main class="min-h-screen bg-gradient-to-b from-green-50 to-white">
+  <div class="container mx-auto px-4 py-16 text-center">
+    <!-- Simplified 404 Number -->
+    <div class="mb-8">
+      <h1 class="text-9xl font-bold text-green-800">404</h1>
+    </div>
+
+    <!-- Simple Icon (instead of grill and smoke) -->
+    <!-- <div class="mb-8 flex justify-center">
+      <div class="w-32 h-32 bg-green-100 rounded-full flex items-center justify-center">
+        <i class="fas fa-search text-green-600 text-5xl"></i>
+      </div>
+    </div> -->
+
+    <!-- Clear Message -->
+    <h2 class="text-4xl font-bold text-green-800 mb-4">Page Not Found</h2>
+
+    <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+      We couldn't find the page you're looking for. It might have been moved or deleted.
+    </p>
+
+    <!-- Simple Action Buttons -->
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+      <button
+        routerLink="/"
+        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300"
+      >
+        <i class="fas fa-home mr-2"></i>
+        Go Back Home
+      </button>
+
+      <button
+        routerLink="/product"
+        class="bg-yellow-500 hover:bg-yellow-600 text-green-900 font-bold py-3 px-8 rounded-lg transition duration-300"
+      >
+        <i class="fas fa-utensils mr-2"></i>
+        View Products
+      </button>
+    </div>
+
+    <!-- Helpful Links -->
+    <div class="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
+      <h3 class="text-2xl font-bold text-green-800 mb-6">You might be looking for:</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a
+          routerLink="/product"
+          class="block p-4 bg-green-50 hover:bg-green-100 rounded-lg transition duration-300"
+        >
+          <i class="fas fa-utensils text-green-600 mr-2"></i>
+          <span class="font-medium">Our Products</span>
+        </a>
+
+        <a
+          routerLink="/contact"
+          class="block p-4 bg-green-50 hover:bg-green-100 rounded-lg transition duration-300"
+        >
+          <i class="fas fa-phone text-green-600 mr-2"></i>
+          <span class="font-medium">Contact Us</span>
+        </a>
+
+        <a
+          routerLink="/feature"
+          class="block p-4 bg-green-50 hover:bg-green-100 rounded-lg transition duration-300"
+        >
+          <i class="fas fa-star text-green-600 mr-2"></i>
+          <span class="font-medium">Features</span>
+        </a>
+
+        <a
+          href="/location"
+          class="block p-4 bg-green-50 hover:bg-green-100 rounded-lg transition duration-300"
+        >
+          <i class="fas fa-map-marker-alt text-green-600 mr-2"></i>
+          <span class="font-medium">Find a Branch</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Simple Contact Info -->
+    <div class="mt-12 text-gray-600">
+      <p class="mb-2">Need help? Contact our customer service:</p>
+      <p class="font-medium">
+        <i class="fas fa-phone text-green-600 mr-2"></i>
+        (02) 8888-8888
+      </p>
+    </div>
+  </div>
+</main>

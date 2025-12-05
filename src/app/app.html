@@ -1,0 +1,293 @@
+<!-- Responsive Header -->
+<header class="bg-green-700 text-white shadow-lg sticky top-0 z-50">
+  <nav class="container mx-auto px-4 py-3">
+    <!-- Top Row: Brand & Mobile Menu Button -->
+    <div class="flex items-center justify-between">
+      <!-- Brand Logo & Name -->
+      <div class="flex items-center space-x-3">
+        <img src="img/logo_mang.png" alt="Mang Inasal Logo" class="h-10 w-auto" />
+        <span class="text-xl font-bold tracking-wide hidden sm:inline"
+          >MANG <span class="text-red-600 font-bold">INASAL</span></span
+        >
+        <span class="text-xl font-bold tracking-wide sm:hidden">I-S, U-S</span>
+      </div>
+
+      <!-- Desktop Social Icons & Cart (Right Side) -->
+      <div class="flex items-center space-x-4">
+        <!-- Desktop Social Icons -->
+        <div class="hidden lg:flex items-center space-x-4">
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="Facebook"
+          >
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="Instagram"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="TikTok"
+          >
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="Twitter"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+
+        <!-- Cart Icon (Visible on all screens) -->
+        <div class="relative">
+          <a href="order.html" class="relative flex items-center" aria-label="View Cart">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 44 44"
+              fill="none"
+              class="hover:scale-110 transition-transform duration-200"
+            >
+              <path
+                d="M31.1667 33C29.1317 33 27.5 34.6316 27.5 36.6666C27.5 37.6391 27.8863 38.5717 28.5739 39.2594C29.2616 39.947 30.1942 40.3333 31.1667 40.3333C32.1391 40.3333 33.0718 39.947 33.7594 39.2594C34.447 38.5717 34.8333 37.6391 34.8333 36.6666C34.8333 35.6942 34.447 34.7615 33.7594 34.0739C33.0718 33.3863 32.1391 33 31.1667 33ZM1.83334 3.66663V7.33329H5.5L12.1 21.2483L9.60667 25.74C9.33167 26.2533 9.16667 26.8583 9.16667 27.5C9.16667 28.4724 9.55298 29.4051 10.2406 30.0927C10.9282 30.7803 11.8609 31.1666 12.8333 31.1666H34.8333V27.5H13.6033C13.4818 27.5 13.3652 27.4517 13.2792 27.3657C13.1933 27.2798 13.145 27.1632 13.145 27.0416C13.145 26.95 13.1633 26.8766 13.2 26.8216L14.85 23.8333H28.5083C29.8833 23.8333 31.0933 23.0633 31.7167 21.945L38.28 10.0833C38.4083 9.78996 38.5 9.47829 38.5 9.16663C38.5 8.6804 38.3069 8.21408 37.963 7.87026C37.6192 7.52645 37.1529 7.33329 36.6667 7.33329H9.55167L7.82834 3.66663M12.8333 33C10.7983 33 9.16667 34.6316 9.16667 36.6666C9.16667 37.6391 9.55298 38.5717 10.2406 39.2594C10.9282 39.947 11.8609 40.3333 12.8333 40.3333C13.8058 40.3333 14.7384 39.947 15.4261 39.2594C16.1137 38.5717 16.5 37.6391 16.5 36.6666C16.5 35.6942 16.1137 34.7615 15.4261 34.0739C14.7384 33.3863 13.8058 33 12.8333 33Z"
+                fill="white"
+              />
+            </svg>
+            <span
+              id="cart-count"
+              class="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+              >0</span
+            >
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button
+          id="mobile-menu-toggle"
+          class="md:hidden text-2xl ml-2 focus:outline-none focus:ring-2 focus:ring-yellow-300 rounded"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Desktop Navigation Links (Hidden on mobile) -->
+    <div class="hidden md:block mt-4">
+      <ul class="flex flex-wrap items-center justify-center space-x-4 lg:space-x-6">
+        <li>
+          <a
+            routerLink="/"
+            class="hover:text-yellow-300 transition-colors duration-200 font-medium py-2 px-1 hover:border-b-2 hover:border-yellow-300 pb-1"
+            >HOME</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/feature"
+            class="hover:text-yellow-300 transition-colors duration-200 font-medium py-2 px-1 hover:border-b-2 hover:border-yellow-300 pb-1"
+            >FEATURE</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/product"
+            class="hover:text-yellow-300 transition-colors duration-200 font-medium py-2 px-1 hover:border-b-2 hover:border-yellow-300 pb-1"
+            >PRODUCT</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/contact"
+            class="hover:text-yellow-300 transition-colors duration-200 font-medium py-2 px-1 hover:border-b-2 hover:border-yellow-300 pb-1"
+            >CONTACT</a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay (Hidden by default) -->
+  <div
+    id="mobile-menu"
+    class="md:hidden fixed inset-0 bg-green-800 bg-opacity-95 z-40 hidden"
+    style="top: 72px"
+  >
+    <div class="container mx-auto px-6 py-8">
+      <!-- Mobile Navigation Links -->
+      <ul class="space-y-2">
+        <li class="mobile-nav-item">
+          <a
+            href="index.html"
+            class="block py-3 px-4 text-lg font-medium hover:bg-green-600 rounded-lg transition-colors duration-200"
+          >
+            <i class="fas fa-home mr-3 w-6 text-center"></i>
+            HOME
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a
+            href="feature.html"
+            class="block py-3 px-4 text-lg font-medium hover:bg-green-600 rounded-lg transition-colors duration-200"
+          >
+            <i class="fas fa-star mr-3 w-6 text-center"></i>
+            FEATURE
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a
+            href="product.html"
+            class="block py-3 px-4 text-lg font-medium bg-green-600 rounded-lg text-yellow-300"
+          >
+            <i class="fas fa-utensils mr-3 w-6 text-center"></i>
+            PRODUCT
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a
+            href="contact.html"
+            class="block py-3 px-4 text-lg font-medium hover:bg-green-600 rounded-lg transition-colors duration-200"
+          >
+            <i class="fas fa-phone mr-3 w-6 text-center"></i>
+            CONTACT
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a
+            href="customerlist.html"
+            class="block py-3 px-4 text-lg font-medium hover:bg-green-600 rounded-lg transition-colors duration-200"
+          >
+            <i class="fas fa-users mr-3 w-6 text-center"></i>
+            CUSTOMER LIST
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a
+            href="messages.html"
+            class="block py-3 px-4 text-lg font-medium hover:bg-green-600 rounded-lg transition-colors duration-200"
+          >
+            <i class="fas fa-envelope mr-3 w-6 text-center"></i>
+            MESSAGES
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a
+            href="location.html#map"
+            class="block py-3 px-4 text-lg font-medium hover:bg-green-600 rounded-lg transition-colors duration-200"
+          >
+            <i class="fas fa-map-marker-alt mr-3 w-6 text-center"></i>
+            LOCATION
+          </a>
+        </li>
+      </ul>
+
+      <!-- Mobile Social Icons -->
+      <div class="mt-8 pt-8 border-t border-white/20">
+        <p class="text-lg font-medium mb-4 text-center">Follow Us</p>
+        <div class="flex justify-center space-x-6 text-2xl">
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="Facebook"
+          >
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="Instagram"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="TikTok"
+          >
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="Twitter"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            href="#"
+            class="hover:text-yellow-300 transition-colors duration-200"
+            aria-label="Email"
+          >
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Contact Info in Mobile Menu -->
+      <div class="mt-6 text-center text-sm opacity-80">
+        <p class="mb-1"><i class="fas fa-phone mr-2"></i> (02) 8888-8888</p>
+        <p class="mb-1"><i class="fas fa-clock mr-2"></i> Open 10AM - 10PM Daily</p>
+        <p><i class="fas fa-map-pin mr-2"></i> Nationwide Branches</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<router-outlet />
+
+<!-- Responsive Footer -->
+<footer class="bg-green-800 text-white mt-12">
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Brand Info -->
+      <div>
+        <h3 class="text-xl font-bold mb-4">Mang Inasal</h3>
+        <p class="text-green-200">
+          Serving authentic Filipino grilled dishes since 2003. Experience the taste of ihaw-sarap
+          with unli-saya!
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li>
+            <a href="#" class="hover:text-yellow-300 transition-colors duration-200">Menu</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-yellow-300 transition-colors duration-200">Branches</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-yellow-300 transition-colors duration-200">Careers</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-yellow-300 transition-colors duration-200">Franchise</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+        <p class="mb-2"><i class="fas fa-phone mr-2"></i> (02) 8888-8888</p>
+        <p class="mb-2"><i class="fas fa-envelope mr-2"></i> info@manginasal.com</p>
+        <p><i class="fas fa-map-marker-alt mr-2"></i> Nationwide Branches</p>
+      </div>
+    </div>
+
+    <div class="border-t border-green-700 mt-8 pt-8 text-center text-green-200">
+      <p>&copy; 2024 Mang Inasal. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,34 @@
+        body {
+            font-family: "Segoe UI", sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .page-transition {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .page-transition.fade-in {
+            opacity: 1;
+        }
+        
+        /* Hero video styling */
+        .hero-video {
+            filter: brightness(0.6);
+        }
+        
+        /* Custom card hover effects */
+        .food-item:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Star decoration for cards */
+        .card-star::before {
+            content: "★";
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.2rem;
+            color: #ffd700;
+        }

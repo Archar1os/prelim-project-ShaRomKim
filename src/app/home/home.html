@@ -1,0 +1,288 @@
+<div class="min-h-screen">
+  <!-- Hero Video Section -->
+  <!-- Replace entire hero section with -->
+  <section class="relative h-screen overflow-hidden bg-green-800">
+    <div class="absolute inset-0">
+      <img
+        src="./img/background.jpg"
+        alt="Mang Inasal Restaurant"
+        class="w-full h-full object-cover opacity-50"
+      />
+    </div>
+    <!-- Rest of hero content remains the same -->
+
+    <!-- Hero Content -->
+    <div
+      class="relative z-10 h-full flex flex-col justify-center items-center text-white text-center px-4"
+    >
+      <div class="max-w-4xl">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-4">
+          Ihaw-Sarap, <span class="text-yellow-300">Unli-Saya</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+          Experience authentic Filipino grilled chicken with our famous unlimited rice
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            routerLink="/product"
+            class="bg-yellow-500 hover:bg-yellow-600 text-green-900 font-bold py-3 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105"
+          >
+            <i class="fas fa-utensils mr-2"></i>
+            Order Now
+          </button>
+          <button
+            (click)="scrollToFeatures()"
+            class="bg-transparent border-2 border-white hover:bg-white hover:text-green-900 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300"
+          >
+            <i class="fas fa-play-circle mr-2"></i>
+            Learn More
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div
+      (click)="scrollToFeatures()"
+      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce"
+    >
+      <div class="text-white">
+        <i class="fas fa-chevron-down text-2xl"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section #featuresSection class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">
+          Why Choose <span class="text-yellow-500">Mang Inasal</span>
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Discover the authentic taste of Filipino grilled cuisine
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div
+          class="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300"
+        >
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6"
+          >
+            <i class="fas fa-fire text-green-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-green-800 mb-4">Authentic Grilling</h3>
+          <p class="text-gray-600">
+            Our chicken is grilled to perfection using traditional Filipino recipes and techniques.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div
+          class="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300"
+        >
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-6"
+          >
+            <i class="fas fa-infinity text-yellow-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-green-800 mb-4">Unlimited Rice</h3>
+          <p class="text-gray-600">
+            Enjoy our famous unlimited rice with every meal. Eat to your heart's content!
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div
+          class="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300"
+        >
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6"
+          >
+            <i class="fas fa-heart text-red-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-green-800 mb-4">Family Friendly</h3>
+          <p class="text-gray-600">
+            Perfect for family gatherings, celebrations, and everyday meals with loved ones.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Products -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">Customer Favorites</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Try our most popular dishes loved by thousands
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Product 1 -->
+        <div
+          class="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+        >
+          <div class="relative h-64">
+            <img
+              src="./img/chicken-inasal-solo-fiesta.webp"
+              alt="Chicken Inasal"
+              class="w-full h-full object-cover"
+            />
+            <div
+              class="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-bold"
+            >
+              Best Seller
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-green-800 mb-2">Chicken Inasal</h3>
+            <p class="text-gray-600 mb-4">
+              Juicy grilled chicken marinated in authentic Filipino spices
+            </p>
+            <div class="flex justify-between items-center">
+              <span class="text-2xl font-bold text-green-700">₱199</span>
+              <button
+                (click)="addToCart('Chicken Inasal')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition duration-200"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div
+          class="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+        >
+          <div class="relative h-64">
+            <img src="./img/porkBBQ.webp" alt="Pork BBQ" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-green-800 mb-2">Pork BBQ</h3>
+            <p class="text-gray-600 mb-4">Sweet and savory pork skewers, grilled to perfection</p>
+            <div class="flex justify-between items-center">
+              <span class="text-2xl font-bold text-green-700">₱89</span>
+              <button
+                (click)="addToCart('Pork BBQ')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition duration-200"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div
+          class="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+        >
+          <div class="relative h-64">
+            <img src="./img/PorkSisig.png" alt="Unli Rice" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-green-800 mb-2">Pork Sisig</h3>
+            <p class="text-gray-600 mb-4">
+              A sizzling plate of flavorful pork sisig, perfect with rice
+            </p>
+            <div class="flex justify-between items-center">
+              <span class="text-2xl font-bold text-green-700">₱89</span>
+              <button
+                (click)="addToCart('Pork Sisig')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition duration-200"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <button
+          routerLink="/product"
+          class="bg-yellow-500 hover:bg-yellow-600 text-green-900 font-bold py-3 px-8 rounded-lg text-lg transition duration-300 inline-flex items-center"
+        >
+          View All Products
+          <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Branches Section -->
+  <section class="py-16 bg-green-700 text-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Find Us Nationwide</h2>
+        <p class="text-green-100 max-w-2xl mx-auto">
+          With over 500 branches across the Philippines, we're always near you
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <i class="fas fa-map-marker-alt text-4xl mb-4 text-yellow-300"></i>
+          <h3 class="text-xl font-bold mb-2">500+ Branches</h3>
+          <p class="text-green-100">Nationwide presence</p>
+        </div>
+        <div class="text-center">
+          <i class="fas fa-clock text-4xl mb-4 text-yellow-300"></i>
+          <h3 class="text-xl font-bold mb-2">10AM - 10PM</h3>
+          <p class="text-green-100">Open daily</p>
+        </div>
+        <div class="text-center">
+          <i class="fas fa-motorcycle text-4xl mb-4 text-yellow-300"></i>
+          <h3 class="text-xl font-bold mb-2">Delivery Available</h3>
+          <p class="text-green-100">Via GrabFood & FoodPanda</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <button
+          routerLink="/location"
+          class="bg-white hover:bg-gray-100 text-green-800 font-bold py-3 px-8 rounded-lg text-lg transition duration-300 inline-flex items-center"
+        >
+          <i class="fas fa-map mr-2"></i>
+          Find Nearest Branch
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-green-800 mb-4">Stay Updated</h2>
+        <p class="text-gray-600 mb-8">
+          Subscribe to get updates on new products, promotions, and branch openings
+        </p>
+
+        <form (ngSubmit)="onSubscribe()" class="flex flex-col sm:flex-row gap-4">
+          <input
+            type="email"
+            (ngModel)="(email)"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="flex-grow px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+          />
+          <button
+            type="submit"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

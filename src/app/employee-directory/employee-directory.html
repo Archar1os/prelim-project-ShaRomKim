@@ -1,0 +1,339 @@
+<div class="min-h-screen bg-gray-50 p-4 md:p-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-green-800 mb-2 flex items-center">
+      <i class="fas fa-users mr-3"></i>
+      Employee Directory
+    </h1>
+    <p class="text-gray-600">Manage and view all restaurant employees</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="bg-green-100 p-3 rounded-lg mr-4">
+          <i class="fas fa-user-friends text-green-600 text-xl"></i>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-800">{{ employees.length }}</p>
+          <p class="text-gray-500 text-sm">Total Employees</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+          <i class="fas fa-utensils text-blue-600 text-xl"></i>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-800">{{ getCountByDepartment('Kitchen') }}</p>
+          <p class="text-gray-500 text-sm">Kitchen Staff</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="bg-yellow-100 p-3 rounded-lg mr-4">
+          <i class="fas fa-concierge-bell text-yellow-600 text-xl"></i>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-800">{{ getCountByDepartment('Service') }}</p>
+          <p class="text-gray-500 text-sm">Service Staff</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+          <i class="fas fa-user-tie text-purple-600 text-xl"></i>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-800">{{ getCountByDepartment('Management') }}</p>
+          <p class="text-gray-500 text-sm">Managers</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter Bar -->
+  <div class="bg-white rounded-lg shadow p-6 mb-8">
+    <div class="flex flex-col lg:flex-row gap-4 items-center">
+      <!-- Search -->
+      <div class="relative flex-grow w-full">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()"
+          placeholder="Search employees by name, position, or department..."
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+        />
+      </div>
+
+      <!-- Department Filter -->
+      <div class="w-full lg:w-auto">
+        <select
+          [(ngModel)]="selectedDepartment"
+          (change)="onDepartmentFilter()"
+          class="w-full lg:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+        >
+          <option value="">All Departments</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Service">Service</option>
+          <option value="Management">Management</option>
+        </select>
+      </div>
+
+      <!-- Add Employee Button -->
+      <button
+        (click)="onAddEmployee()"
+        class="w-full lg:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center justify-center transition duration-200"
+      >
+        <i class="fas fa-plus mr-2"></i>
+        Add Employee
+      </button>
+    </div>
+  </div>
+
+  <!-- Employee Cards (Grid View) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div
+      *ngFor="let employee of filteredEmployees"
+      class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
+    >
+      <!-- Employee Card Header -->
+      <div class="p-6 border-b">
+        <div class="flex items-center">
+          <!-- Avatar -->
+          <div class="relative">
+            <img
+              [src]="getAvatarUrl(employee)"
+              alt="{{ employee.name }}"
+              class="w-16 h-16 rounded-full object-cover border-2 border-white shadow"
+            />
+            <!-- Status Indicator -->
+            <div
+              class="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white"
+              [ngClass]="{
+                'bg-green-500': employee.status === 'Active',
+                'bg-red-500': employee.status === 'Inactive',
+                'bg-yellow-500': employee.status === 'On Leave'
+              }"
+            ></div>
+          </div>
+
+          <!-- Basic Info -->
+          <div class="ml-4">
+            <h3 class="text-lg font-bold text-gray-900">{{ employee.name }}</h3>
+            <p class="text-sm text-green-600 font-medium">{{ employee.position }}</p>
+            <p class="text-xs text-gray-500 mt-1">ID: {{ employee.id }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employee Details -->
+      <div class="p-6">
+        <!-- Department Badge -->
+        <div class="mb-4">
+          <span
+            class="px-3 py-1 text-xs font-semibold rounded-full"
+            [ngClass]="getDepartmentBadgeClass(employee.department)"
+          >
+            {{ employee.department }}
+          </span>
+        </div>
+
+        <!-- Info List -->
+        <div class="space-y-3">
+          <div class="flex items-center">
+            <i class="fas fa-store text-gray-400 w-5 mr-3"></i>
+            <span class="text-sm text-gray-600">{{ employee.branch }}</span>
+          </div>
+
+          <div class="flex items-center">
+            <i class="fas fa-envelope text-gray-400 w-5 mr-3"></i>
+            <span class="text-sm text-gray-600 truncate">{{ employee.email }}</span>
+          </div>
+
+          <div class="flex items-center">
+            <i class="fas fa-phone text-gray-400 w-5 mr-3"></i>
+            <span class="text-sm text-gray-600">{{ employee.phone }}</span>
+          </div>
+
+          <div class="flex items-center">
+            <i class="fas fa-calendar-alt text-gray-400 w-5 mr-3"></i>
+            <span class="text-sm text-gray-600">Joined {{ employee.hireDate }}</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex space-x-2">
+          <button
+            (click)="onViewEmployee(employee)"
+            class="flex-1 bg-green-50 hover:bg-green-100 text-green-700 px-3 py-2 rounded-lg text-sm font-medium transition duration-200"
+          >
+            <i class="fas fa-eye mr-1"></i>
+            View
+          </button>
+          <button
+            (click)="onEditEmployee(employee)"
+            class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium transition duration-200"
+          >
+            <i class="fas fa-edit mr-1"></i>
+            Edit
+          </button>
+          <button
+            (click)="onDeleteEmployee(employee.id)"
+            class="flex-1 bg-red-50 hover:bg-red-100 text-red-700 px-3 py-2 rounded-lg text-sm font-medium transition duration-200"
+          >
+            <i class="fas fa-trash mr-1"></i>
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredEmployees.length === 0" class="text-center py-16">
+    <div class="inline-block bg-gray-100 p-8 rounded-full mb-6">
+      <i class="fas fa-user-slash text-gray-400 text-4xl"></i>
+    </div>
+    <h3 class="text-xl font-medium text-gray-900 mb-2">No employees found</h3>
+    <p class="text-gray-500 mb-6">Try adjusting your search or filters</p>
+    <button
+      (click)="clearFilters()"
+      class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
+    >
+      Clear Filters
+    </button>
+  </div>
+
+  <!-- Employee Details Modal -->
+  <div
+    *ngIf="selectedEmployee"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+  >
+    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <!-- Modal Header -->
+      <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+        <h3 class="text-xl font-bold text-gray-900">Employee Details</h3>
+        <button
+          (click)="selectedEmployee = null"
+          class="text-gray-400 hover:text-gray-600 text-2xl"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Modal Content -->
+      <div class="p-6">
+        <!-- Profile Header -->
+        <div class="flex flex-col md:flex-row items-center md:items-start mb-8">
+          <div class="mb-4 md:mb-0 md:mr-6">
+            <img
+              [src]="getAvatarUrl(selectedEmployee)"
+              alt="{{ selectedEmployee.name }}"
+              class="w-32 h-32 rounded-full object-cover border-4 border-green-100"
+            />
+          </div>
+          <div class="text-center md:text-left">
+            <h2 class="text-2xl font-bold text-gray-900">{{ selectedEmployee.name }}</h2>
+            <p class="text-lg text-green-600 font-medium">{{ selectedEmployee.position }}</p>
+            <div class="mt-2">
+              <span
+                class="px-3 py-1 text-sm font-semibold rounded-full"
+                [ngClass]="getDepartmentBadgeClass(selectedEmployee.department)"
+              >
+                {{ selectedEmployee.department }}
+              </span>
+              <span
+                class="ml-2 px-3 py-1 text-sm font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': selectedEmployee.status === 'Active',
+                  'bg-red-100 text-red-800': selectedEmployee.status === 'Inactive',
+                  'bg-yellow-100 text-yellow-800': selectedEmployee.status === 'On Leave'
+                }"
+              >
+                {{ selectedEmployee.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <!-- Left Column -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Employee ID</label>
+              <p class="text-gray-900 font-medium">{{ selectedEmployee.id }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Branch</label>
+              <p class="text-gray-900 font-medium">{{ selectedEmployee.branch }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Shift</label>
+              <p class="text-gray-900 font-medium">
+                {{ selectedEmployee.shift || 'Morning Shift' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Email</label>
+              <p class="text-gray-900 font-medium">{{ selectedEmployee.email }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Phone</label>
+              <p class="text-gray-900 font-medium">{{ selectedEmployee.phone }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Hire Date</label>
+              <p class="text-gray-900 font-medium">{{ selectedEmployee.hireDate }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div *ngIf="selectedEmployee.recentActivity && selectedEmployee.recentActivity.length > 0">
+          <h4 class="text-lg font-bold text-gray-900 mb-4">Recent Activity</h4>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <ul class="space-y-3">
+              <li *ngFor="let activity of selectedEmployee.recentActivity" class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                <span class="text-gray-700">{{ activity }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="mt-8 flex justify-end space-x-3">
+          <button
+            (click)="onEditEmployee(selectedEmployee)"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
+          >
+            <i class="fas fa-edit mr-2"></i>
+            Edit Employee
+          </button>
+          <button
+            (click)="selectedEmployee = null"
+            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-200"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

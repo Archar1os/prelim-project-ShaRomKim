@@ -1,0 +1,35 @@
+/* Simple styles */
+:host {
+  display: block;
+}
+
+/* Modal animation */
+.fixed {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Card hover effect */
+.bg-white {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bg-white:hover {
+  transform: translateY(-2px);
+}
+
+/* Smooth transitions */
+button,
+a,
+select,
+input {
+  transition: all 0.2s ease;
+}

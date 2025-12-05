@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>InasalTailwind</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+</head>
+<body>
+  <app-root></app-root>
+   <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("animate-slide-up");
+                    }
+                });
+            },
+            {
+                threshold: 0.2,
+            }
+        );
+
+        // Observe elements for animation
+        document.querySelectorAll(".text-block, .gallery").forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Page transition effect
+        document.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.add("page-transition", "fade-in");
+            
+            // Remove fade-out class if it exists
+            if (document.body.classList.contains("fade-out")) {
+                document.body.classList.remove("fade-out");
+            }
+        });
+
+        // Internal link navigation with transition
+        document.querySelectorAll("a[href^='#']").forEach((link) => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute("href");
+                if (targetId !== "#") {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Cart functionality
+        document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+            button.addEventListener("click", function(e) {
+                e.preventDefault();
+                const product = this.getAttribute("data-product");
+                const countElement = document.querySelector(".cart-count");
+                let count = parseInt(countElement.textContent);
+                countElement.textContent = count + 1;
+                
+                // Show feedback
+                const originalText = this.textContent;
+                this.textContent = "ADDED TO CART!";
+                this.classList.add("bg-green-500", "text-white");
+                
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.classList.remove("bg-green-500", "text-white");
+                }, 1500);
+                
+                console.log(`Added ${product} to cart`);
+            });
+        });
+    </script>
+</body>
+</html>
