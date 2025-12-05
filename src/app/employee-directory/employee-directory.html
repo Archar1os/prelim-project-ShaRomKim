@@ -5,7 +5,9 @@
       <i class="fas fa-users mr-3"></i>
       Employee Directory
     </h1>
-    <p class="text-gray-600">Manage and view all restaurant employees</p>
+    <p class="text-gray-600">
+      Manage employee data with advanced filtering and conditional display
+    </p>
   </div>
 
   <!-- Stats Cards -->
@@ -13,7 +15,7 @@
     <div class="bg-white rounded-lg shadow p-6">
       <div class="flex items-center">
         <div class="bg-green-100 p-3 rounded-lg mr-4">
-          <i class="fas fa-user-friends text-green-600 text-xl"></i>
+          <i class="fas fa-users text-green-600 text-xl"></i>
         </div>
         <div>
           <p class="text-2xl font-bold text-gray-800">{{ employees.length }}</p>
@@ -25,23 +27,23 @@
     <div class="bg-white rounded-lg shadow p-6">
       <div class="flex items-center">
         <div class="bg-blue-100 p-3 rounded-lg mr-4">
-          <i class="fas fa-utensils text-blue-600 text-xl"></i>
+          <i class="fas fa-male text-blue-600 text-xl"></i>
         </div>
         <div>
-          <p class="text-2xl font-bold text-gray-800">{{ getCountByDepartment('Kitchen') }}</p>
-          <p class="text-gray-500 text-sm">Kitchen Staff</p>
+          <p class="text-2xl font-bold text-gray-800">{{ getGenderCount('Male') }}</p>
+          <p class="text-gray-500 text-sm">Male Employees</p>
         </div>
       </div>
     </div>
 
     <div class="bg-white rounded-lg shadow p-6">
       <div class="flex items-center">
-        <div class="bg-yellow-100 p-3 rounded-lg mr-4">
-          <i class="fas fa-concierge-bell text-yellow-600 text-xl"></i>
+        <div class="bg-pink-100 p-3 rounded-lg mr-4">
+          <i class="fas fa-female text-pink-600 text-xl"></i>
         </div>
         <div>
-          <p class="text-2xl font-bold text-gray-800">{{ getCountByDepartment('Service') }}</p>
-          <p class="text-gray-500 text-sm">Service Staff</p>
+          <p class="text-2xl font-bold text-gray-800">{{ getGenderCount('Female') }}</p>
+          <p class="text-gray-500 text-sm">Female Employees</p>
         </div>
       </div>
     </div>
@@ -49,17 +51,17 @@
     <div class="bg-white rounded-lg shadow p-6">
       <div class="flex items-center">
         <div class="bg-purple-100 p-3 rounded-lg mr-4">
-          <i class="fas fa-user-tie text-purple-600 text-xl"></i>
+          <i class="fas fa-money-bill-wave text-purple-600 text-xl"></i>
         </div>
         <div>
-          <p class="text-2xl font-bold text-gray-800">{{ getCountByDepartment('Management') }}</p>
-          <p class="text-gray-500 text-sm">Managers</p>
+          <p class="text-2xl font-bold text-gray-800">₱{{ getTotalSalary() | number : '1.0-0' }}</p>
+          <p class="text-gray-500 text-sm">Total Monthly Salary</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Search and Filter Bar -->
+  <!-- Controls Section -->
   <div class="bg-white rounded-lg shadow p-6 mb-8">
     <div class="flex flex-col lg:flex-row gap-4 items-center">
       <!-- Search -->
@@ -69,24 +71,37 @@
         </div>
         <input
           type="text"
-          [(ngModel)]="searchQuery"
-          (input)="onSearch()"
-          placeholder="Search employees by name, position, or department..."
+          [value]="searchQuery"
+          (input)="searchQuery = $any($event.target).value; onSearch()"
+          placeholder="Search by name, email, or employee number..."
           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
         />
       </div>
 
-      <!-- Department Filter -->
+      <!-- Employment Status Filter -->
       <div class="w-full lg:w-auto">
         <select
-          [(ngModel)]="selectedDepartment"
-          (change)="onDepartmentFilter()"
+          [value]="selectedStatus"
+          (change)="selectedStatus = $any($event.target).value; onStatusFilter()"
           class="w-full lg:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
         >
-          <option value="">All Departments</option>
-          <option value="Kitchen">Kitchen</option>
-          <option value="Service">Service</option>
-          <option value="Management">Management</option>
+          <option value="">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="On Leave">On Leave</option>
+        </select>
+      </div>
+
+      <!-- Gender Filter -->
+      <div class="w-full lg:w-auto">
+        <select
+          [value]="selectedGender"
+          (change)="selectedGender = $any($event.target).value; onGenderFilter()"
+          class="w-full lg:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+        >
+          <option value="">All Genders</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
         </select>
       </div>
 
@@ -99,239 +114,245 @@
         Add Employee
       </button>
     </div>
-  </div>
 
-  <!-- Employee Cards (Grid View) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <div
-      *ngFor="let employee of filteredEmployees"
-      class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
-    >
-      <!-- Employee Card Header -->
-      <div class="p-6 border-b">
-        <div class="flex items-center">
-          <!-- Avatar -->
-          <div class="relative">
-            <img
-              [src]="getAvatarUrl(employee)"
-              alt="{{ employee.name }}"
-              class="w-16 h-16 rounded-full object-cover border-2 border-white shadow"
-            />
-            <!-- Status Indicator -->
-            <div
-              class="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white"
-              [ngClass]="{
-                'bg-green-500': employee.status === 'Active',
-                'bg-red-500': employee.status === 'Inactive',
-                'bg-yellow-500': employee.status === 'On Leave'
-              }"
-            ></div>
-          </div>
-
-          <!-- Basic Info -->
-          <div class="ml-4">
-            <h3 class="text-lg font-bold text-gray-900">{{ employee.name }}</h3>
-            <p class="text-sm text-green-600 font-medium">{{ employee.position }}</p>
-            <p class="text-xs text-gray-500 mt-1">ID: {{ employee.id }}</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Employee Details -->
-      <div class="p-6">
-        <!-- Department Badge -->
-        <div class="mb-4">
-          <span
-            class="px-3 py-1 text-xs font-semibold rounded-full"
-            [ngClass]="getDepartmentBadgeClass(employee.department)"
-          >
-            {{ employee.department }}
-          </span>
-        </div>
-
-        <!-- Info List -->
-        <div class="space-y-3">
-          <div class="flex items-center">
-            <i class="fas fa-store text-gray-400 w-5 mr-3"></i>
-            <span class="text-sm text-gray-600">{{ employee.branch }}</span>
-          </div>
-
-          <div class="flex items-center">
-            <i class="fas fa-envelope text-gray-400 w-5 mr-3"></i>
-            <span class="text-sm text-gray-600 truncate">{{ employee.email }}</span>
-          </div>
-
-          <div class="flex items-center">
-            <i class="fas fa-phone text-gray-400 w-5 mr-3"></i>
-            <span class="text-sm text-gray-600">{{ employee.phone }}</span>
-          </div>
-
-          <div class="flex items-center">
-            <i class="fas fa-calendar-alt text-gray-400 w-5 mr-3"></i>
-            <span class="text-sm text-gray-600">Joined {{ employee.hireDate }}</span>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="mt-6 flex space-x-2">
-          <button
-            (click)="onViewEmployee(employee)"
-            class="flex-1 bg-green-50 hover:bg-green-100 text-green-700 px-3 py-2 rounded-lg text-sm font-medium transition duration-200"
-          >
-            <i class="fas fa-eye mr-1"></i>
-            View
-          </button>
-          <button
-            (click)="onEditEmployee(employee)"
-            class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium transition duration-200"
-          >
-            <i class="fas fa-edit mr-1"></i>
-            Edit
-          </button>
-          <button
-            (click)="onDeleteEmployee(employee.id)"
-            class="flex-1 bg-red-50 hover:bg-red-100 text-red-700 px-3 py-2 rounded-lg text-sm font-medium transition duration-200"
-          >
-            <i class="fas fa-trash mr-1"></i>
-            Delete
-          </button>
-        </div>
+    <!-- Salary Range Filter -->
+    <div class="mt-4">
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Salary Range: ₱{{ minSalary | number : '1.0-0' }} - ₱{{ maxSalary | number : '1.0-0' }}
+      </label>
+      <input
+        type="range"
+        min="15000"
+        max="100000"
+        step="5000"
+        [value]="maxSalary"
+        (input)="maxSalary = +$any($event.target).value; onSalaryFilter()"
+        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+      />
+      <div class="flex justify-between text-xs text-gray-500 mt-1">
+        <span>₱15,000</span>
+        <span>Current: ₱{{ maxSalary | number : '1.0-0' }}</span>
+        <span>₱100,000</span>
       </div>
     </div>
   </div>
 
-  <!-- Empty State -->
-  <div *ngIf="filteredEmployees.length === 0" class="text-center py-16">
-    <div class="inline-block bg-gray-100 p-8 rounded-full mb-6">
-      <i class="fas fa-user-slash text-gray-400 text-4xl"></i>
+  <!-- Employee Table -->
+  <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
+    @if (filteredEmployees.length > 0) {
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Employee #
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Full Name
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Gender
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Email
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Employment Status
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Salary
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          @for (employee of filteredEmployees; track employee.employeeNumber) {
+          <tr class="hover:bg-gray-50 transition-colors duration-150">
+            <!-- Employee Number -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-mono font-bold text-gray-900">
+                {{ employee.employeeNumber }}
+              </div>
+            </td>
+
+            <!-- Full Name with Gender Icon -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  @if (employee.avatar) {
+                  <img class="h-10 w-10 rounded-full object-cover" [src]="employee.avatar" alt="" />
+                  } @else {
+                  <div
+                    [ngClass]="employee.gender === 'Male' ? 'bg-blue-100' : 'bg-pink-100'"
+                    class="h-10 w-10 rounded-full flex items-center justify-center"
+                  >
+                    @if (employee.gender === 'Male') {
+                    <i class="fas fa-male text-blue-600"></i>
+                    } @else {
+                    <i class="fas fa-female text-pink-600"></i>
+                    }
+                  </div>
+                  }
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    {{ employee.fullName }}
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    {{ employee.position }}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Gender with Conditional Display -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              @if (employee.gender === 'Male') {
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+              >
+                <i class="fas fa-male mr-1"></i>
+                Male
+              </span>
+              } @else if (employee.gender === 'Female') {
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-100 text-pink-800"
+              >
+                <i class="fas fa-female mr-1"></i>
+                Female
+              </span>
+              } @else {
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800"
+              >
+                {{ employee.gender }}
+              </span>
+              }
+            </td>
+
+            <!-- Email -->
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ employee.email }}
+            </td>
+
+            <!-- Employment Status with Conditional Styling -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              @switch (employee.employmentStatus) { @case ('Active') {
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800"
+              >
+                <i class="fas fa-check-circle mr-1"></i>
+                Active
+              </span>
+              } @case ('Inactive') {
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800"
+              >
+                <i class="fas fa-times-circle mr-1"></i>
+                Inactive
+              </span>
+              } @case ('On Leave') {
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800"
+              >
+                <i class="fas fa-umbrella-beach mr-1"></i>
+                On Leave
+              </span>
+              } @default {
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-gray-100 text-gray-800"
+              >
+                {{ employee.employmentStatus }}
+              </span>
+              } }
+            </td>
+
+            <!-- Salary with Conditional Highlighting -->
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              @if (employee.salary >= 50000) {
+              <span class="text-green-600 font-bold">
+                ₱{{ employee.salary | number : '1.0-0' }}
+                <i class="fas fa-crown ml-1 text-yellow-500"></i>
+              </span>
+              } @else if (employee.salary >= 30000) {
+              <span class="text-blue-600 font-semibold">
+                ₱{{ employee.salary | number : '1.0-0' }}
+              </span>
+              } @else {
+              <span class="text-gray-600"> ₱{{ employee.salary | number : '1.0-0' }} </span>
+              }
+            </td>
+
+            <!-- Actions -->
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <button
+                (click)="onViewEmployee(employee)"
+                class="text-green-600 hover:text-green-900 mr-3"
+                title="View Details"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+              <button
+                (click)="onEditEmployee(employee)"
+                class="text-blue-600 hover:text-blue-900 mr-3"
+                title="Edit Employee"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+              <button
+                (click)="onDeleteEmployee(employee.employeeNumber)"
+                class="text-red-600 hover:text-red-900"
+                title="Delete Employee"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
-    <h3 class="text-xl font-medium text-gray-900 mb-2">No employees found</h3>
-    <p class="text-gray-500 mb-6">Try adjusting your search or filters</p>
-    <button
-      (click)="clearFilters()"
-      class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
-    >
-      Clear Filters
-    </button>
-  </div>
-
-  <!-- Employee Details Modal -->
-  <div
-    *ngIf="selectedEmployee"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-  >
-    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-      <!-- Modal Header -->
-      <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-        <h3 class="text-xl font-bold text-gray-900">Employee Details</h3>
-        <button
-          (click)="selectedEmployee = null"
-          class="text-gray-400 hover:text-gray-600 text-2xl"
-        >
-          <i class="fas fa-times"></i>
-        </button>
+    } @else {
+    <!-- Empty State -->
+    <div class="text-center py-16">
+      <div class="inline-block bg-gray-100 p-8 rounded-full mb-6">
+        <i class="fas fa-user-slash text-gray-400 text-4xl"></i>
       </div>
+      <h3 class="text-xl font-medium text-gray-900 mb-2">No employees found</h3>
+      <p class="text-gray-500 mb-6">Try adjusting your search or filters</p>
+      <button
+        (click)="clearFilters()"
+        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
+      >
+        Clear Filters
+      </button>
+    </div>
+    }
 
-      <!-- Modal Content -->
-      <div class="p-6">
-        <!-- Profile Header -->
-        <div class="flex flex-col md:flex-row items-center md:items-start mb-8">
-          <div class="mb-4 md:mb-0 md:mr-6">
-            <img
-              [src]="getAvatarUrl(selectedEmployee)"
-              alt="{{ selectedEmployee.name }}"
-              class="w-32 h-32 rounded-full object-cover border-4 border-green-100"
-            />
-          </div>
-          <div class="text-center md:text-left">
-            <h2 class="text-2xl font-bold text-gray-900">{{ selectedEmployee.name }}</h2>
-            <p class="text-lg text-green-600 font-medium">{{ selectedEmployee.position }}</p>
-            <div class="mt-2">
-              <span
-                class="px-3 py-1 text-sm font-semibold rounded-full"
-                [ngClass]="getDepartmentBadgeClass(selectedEmployee.department)"
-              >
-                {{ selectedEmployee.department }}
-              </span>
-              <span
-                class="ml-2 px-3 py-1 text-sm font-semibold rounded-full"
-                [ngClass]="{
-                  'bg-green-100 text-green-800': selectedEmployee.status === 'Active',
-                  'bg-red-100 text-red-800': selectedEmployee.status === 'Inactive',
-                  'bg-yellow-100 text-yellow-800': selectedEmployee.status === 'On Leave'
-                }"
-              >
-                {{ selectedEmployee.status }}
-              </span>
-            </div>
-          </div>
+    <!-- Summary Footer -->
+    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+      <div class="flex justify-between items-center">
+        <div class="text-sm text-gray-600">
+          Showing {{ filteredEmployees.length }} of {{ employees.length }} employees
         </div>
-
-        <!-- Info Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <!-- Left Column -->
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">Employee ID</label>
-              <p class="text-gray-900 font-medium">{{ selectedEmployee.id }}</p>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">Branch</label>
-              <p class="text-gray-900 font-medium">{{ selectedEmployee.branch }}</p>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">Shift</label>
-              <p class="text-gray-900 font-medium">
-                {{ selectedEmployee.shift || 'Morning Shift' }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Right Column -->
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">Email</label>
-              <p class="text-gray-900 font-medium">{{ selectedEmployee.email }}</p>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">Phone</label>
-              <p class="text-gray-900 font-medium">{{ selectedEmployee.phone }}</p>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">Hire Date</label>
-              <p class="text-gray-900 font-medium">{{ selectedEmployee.hireDate }}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div *ngIf="selectedEmployee.recentActivity && selectedEmployee.recentActivity.length > 0">
-          <h4 class="text-lg font-bold text-gray-900 mb-4">Recent Activity</h4>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <ul class="space-y-3">
-              <li *ngFor="let activity of selectedEmployee.recentActivity" class="flex items-start">
-                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                <span class="text-gray-700">{{ activity }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Modal Actions -->
-        <div class="mt-8 flex justify-end space-x-3">
-          <button
-            (click)="onEditEmployee(selectedEmployee)"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
-          >
-            <i class="fas fa-edit mr-2"></i>
-            Edit Employee
-          </button>
-          <button
-            (click)="selectedEmployee = null"
-            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-200"
-          >
-            Close
-          </button>
+        <div class="text-sm font-medium text-gray-900">
+          Total Monthly Salary: ₱{{ getFilteredSalaryTotal() | number : '1.0-0' }}
         </div>
       </div>
     </div>
